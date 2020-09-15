@@ -1,28 +1,42 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Form :colors="colors" :goal="goal" />
+    <section  v-if="showResult" class="Result">
+      <h4>Goal</h4>
+      <ul><li class="attempt goal">
+        <div class="Spot" v-for="(color,i) in goal" :style="{color: color}" :key="i" />
+      </li></ul>
+    </section>
+    <button @click.prevent="showResult = !showResult">Show Result</button>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Form from './components/Form.vue'
 
 export default {
   name: 'App',
+  data() {
+    return {
+      showResult: false,
+      goal: [],
+      colors: ["green", "tomato", "purple", "gold"],
+    }
+  },
+  methods: {
+    rollDice(max = 99) {
+      return Math.floor(Math.random()*max);
+    }
+  },
   components: {
-    HelloWorld
+    Form
+  },
+  created() {
+    for (var i = 4; i > 0; i--) {
+      this.goal.push(this.colors[this.rollDice(this.colors.length)])
+    }
   }
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<style lang="scss" src="./assets/stylesheet.scss"></style>

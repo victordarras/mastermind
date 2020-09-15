@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hi</title>
+  <style>
+    style {
+      display: block;
+    }
+    body {
+      max-width: 100%;
+      -webkit-font-smoothing: antialiased;
+    }
+    * {
+      transition: all 0.3s;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid">
+    <div class="column">
+      <h1>Hey bonjour ! Bienvenue</h1>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maiores consequatur obcaecati qui illo aperiam eos reprehenderit accusamus temporibus magni, aspernatur rem, unde quisquam sequi eius voluptates eum quas nostrum, sapiente.</p>
+      <ul>
+        <li>Check</li>
+        <li>Check</li>
+        <li>Check</li>
+        <li>Check</li>
+      </ul>
+    </div>
+    <div class="column">
+      <pre>
+      <style id="page-css">
+      </style>
+      </pre>
+    </div>
+  </div>
+
+
+</body>
+
+  <script>
+  (function() {
+    var CSS = `
+body {
+  margin: 0 auto;
+  padding: 0;
+  max-width: 60em;
+  color: #555;
+  font-family: 'Roboto', sans-serif;
+  background: tomato;
+  color: #fff;
+}
+h1 {
+  display: inline-block;
+  border-bottom: 3px solid #fff
+}
+.grid {
+  display: flex;
+}
+.column {
+  padding: 0 1em
+}
+style {
+  padding: 2em;
+  background: rgba(0,0,0,0.75);
+  border-radius: 10px;
+}
+`;
+    var b = document.getElementById('page-css');
+    var CSSArray = CSS.split('');
+    var i = 0;
+
+    var write = function() {
+      b.innerHTML += CSSArray[i];
+      i++;
+      if (i >= CSSArray.length){ clearInterval(loop) }
+    }
+    var loop = setInterval(write,15)
+  })();
+  </script>
+
+</html>
