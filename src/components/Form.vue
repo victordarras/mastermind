@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div class="Form">
     <form @submit.prevent="newAttempt()">
       <section>
         <div class="Spot" :style="{color: color_1}"></div>
@@ -27,20 +27,6 @@
       </section>
       <button type="submit" :disabled="disableForm">New Try </button>
     </form>
-    <hr>
-    <h4 v-if="attempts.length">Rounds ({{attempts.length}})</h4>
-    <ul><li v-for="attempt in attempts" :key="attempt.id" class="attempt">
-      <div class="Spot"
-        v-for="(color,id) in attempt.colors"
-        :style="{color: color}"
-        :key="attempt.id + id + color"
-      ></div>
-      <div class="Spot smol"
-        v-for="(advice,i) in attempt.advices"
-        :style="{color: advice}"
-        :key="i"
-      ></div>
-    </li></ul>
   </div>
 </template>
 
@@ -52,8 +38,7 @@ export default {
       color_1: '',
       color_2: '',
       color_3: '',
-      color_4: '',
-      attempts: []
+      color_4: ''
     }
   },
   computed: {
@@ -63,8 +48,6 @@ export default {
   },
   methods: {
     newAttempt() {
-      var currentGoal = [...this.goal];
-      // var result = []
       var currentColors = [
         this.color_1,
         this.color_2,
@@ -72,36 +55,13 @@ export default {
         this.color_4,
       ]
 
-      var advices = []
-      currentGoal.forEach((cur, i) => {
-        if (currentColors.indexOf(cur) === -1) {
-          return console.log('nope' + 1, currentColors )
-        } else if (cur === currentColors[i]) {
-          console.log('nice')
-          advices.push('white');
-        } else if (currentColors.indexOf(cur) >= 0) {
-          console.log('ok', currentColors)
-          advices.push('black');
-        }
-        currentGoal[i] = 'nope'
-        currentColors[currentColors.indexOf(cur)] = 'nope'
-      })
-
-      this.attempts.push({
-        id: this.attempts.length,
-        colors: [
-          this.color_1,
-          this.color_2,
-          this.color_3,
-          this.color_4,
-        ],
-        advices: advices
-      })
+      this.$emit('newAttempt', currentColors)
     }
   },
   props: {
     colors: Array,
-    goal: Array
+    goal: Array,
+    attempts: Array
   }
 }
 </script>
@@ -113,7 +73,7 @@ section {
 .spot-selector {
   display: none;
   position: absolute;
-  top: 2.5rem;
+  bottom: 2.5rem;
   background-color: #fff;
 
   .Spot:hover + &, &:hover {

@@ -1,13 +1,30 @@
 <template>
   <div id="app">
-    <Form :colors="colors" :goal="goal" />
-    <section  v-if="showResult" class="Result">
-      <h4>Goal</h4>
-      <ul><li class="attempt goal">
-        <div class="Spot" v-for="(color,i) in goal" :style="{color: color}" :key="i" />
-      </li></ul>
-    </section>
-    <button @click.prevent="showResult = !showResult">Show Result</button>
+
+    <div class="Result">
+      <section v-if="showResult">
+        <ul><li class="attempt goal">
+          <div class="Spot" v-for="(color,i) in goal" :style="{color: color}" :key="i" />
+        </li></ul>
+      </section>
+      <button @click.prevent="showResult = !showResult">Show Result</button>
+    </div>
+
+    <Form :colors="colors" :goal="goal" @newAttempt="newAttempt" />
+
+    <ul class="Attemps"><li v-for="attempt in attempts" :key="attempt.id" class="attempt">
+      <div class="Spot"
+        v-for="(color, id) in attempt.colors"
+        :style="{color: color}"
+        :key="'' + attempt.id + id"
+      ></div>
+      <div class="Spot smol"
+        v-for="(advice,i) in attempt.advices"
+        :style="{color: advice}"
+        :key="i"
+      ></div>
+    </li></ul>
+
   </div>
 </template>
 
@@ -20,12 +37,36 @@ export default {
     return {
       showResult: false,
       goal: [],
+      attempts: [],
       colors: ["green", "tomato", "purple", "gold"],
     }
   },
   methods: {
     rollDice(max = 99) {
       return Math.floor(Math.random()*max);
+    },
+    newAttempt(currentColors) {
+      var currentGoal = [...this.goal];
+      const attemptColors = [...currentColors];
+
+      var advices = []
+      currentGoal.forEach((cur, i) => {
+        if (currentColors.indexOf(cur) === -1) {
+          return ;
+        } else if (cur === currentColors[i]) {
+          advices.push('white');
+        } else if (currentColors.indexOf(cur) >= 0) {
+          advices.push('black');
+        }
+        currentGoal[i] = 'nope'
+        currentColors[currentColors.indexOf(cur)] = 'nope'
+      })
+
+      this.attempts.push({
+        id: this.attempts.length,
+        colors: attemptColors,
+        advices: advices
+      })
     }
   },
   components: {
