@@ -38,7 +38,7 @@ export default {
       showResult: false,
       goal: [],
       attempts: [],
-      colors: ["green", "tomato", "purple", "gold"],
+      colors: ["#67E9DB", "#7C6AB9", "#F070C8", "#F4AC52"],
     }
   },
   methods: {
